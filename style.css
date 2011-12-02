@@ -48,6 +48,11 @@ ol, ul {
 }
 blockquote, q {
 	quotes: none;
+	width: 80%;
+	margin: 0 auto;
+	color: lightblue;
+	border-bottom: 1px solid;
+	margin-bottom: 25px;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
