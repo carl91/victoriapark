@@ -132,6 +132,14 @@ a{
 	border-bottom: 1px solid;
 }
 
+em{
+	font-style: italic;
+}
+
+strong{
+	font-weight: bold;
+}
+
 
 p {
 	margin: 0 0 1em;
