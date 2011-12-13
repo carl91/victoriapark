@@ -323,6 +323,45 @@ h1.entry-title{
 	width: 100%;
 }
 
+/* Buttons */
+button {
+	display: inline-block;
+	font-weight: bold;
+	line-height: 27px;
+	min-width: 50px;
+	overflow: hidden;
+	padding: 0 9px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+	margin: 0;
+	-webkit-border-radius: 3px;
+	-webkit-background-clip: padding-box;
+	-webkit-box-sizing: border-box;
+	color: #505c77;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+	border: solid 1px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fdfefe), to(#f0f1f2));
+	-webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, .05);
+	box-sizing: border-box;
+	border-color: #ccc #c0c1c2 #bdbec0;
+}
+
+button.blue {
+	font-size: 13px;
+	line-height: 36px;
+	font-family: sans-serif;
+	font-weight: bold;
+	color: #fff;
+	padding: 0 15px;
+	border: solid 1px;
+	border-radius: 3px;
+	background: -webkit-gradient( linear, left top, left bottom, from(#50A9E7), to(#307CB3) );
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 1px rgba(0,0,0,.08);
+	text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+	border-color: #2978B0 #266FA5 #1C557D;
+}
+
 /* Notices */
 .post .notice,
 .error404 #searchform {
