@@ -57,8 +57,8 @@
 </head>
 
 <body <?php body_class(); ?>>
-<div id="page" class="hfeed">
-	<header id="branding" role="banner">
+<div id="page" class="hfeed group">
+	<header id="branding" class="group" role="banner">
 		<hgroup>
 			<h1 id="site-title"><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 			<h2 id="site-description"><?php bloginfo( 'description' ); ?></h2>
@@ -72,4 +72,4 @@
 		</nav><!-- #access -->
 	</header><!-- #branding -->
 
-	<div id="main">
+	<div id="main" class="group">

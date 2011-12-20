@@ -15,8 +15,8 @@
 
 get_header(); ?>
 
-		<div id="primary">
-			<div id="content" role="main">
+		<div id="primary" class="group">
+			<div id="content" role="main" class="group">
 
 			<?php if ( have_posts() ) : ?>
 
