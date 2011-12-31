@@ -4,7 +4,13 @@ Theme Name: Victoria Park
 Author URI: http://waterstreetgm.org/
 Description: A reworking of the Toolbox theme from Automattic.
 Version: 1.0
+
+Yellow Selection: rgb(255,255,158);
+
 */
+
+
+
 
 
 
@@ -50,7 +56,7 @@ blockquote, q {
 	quotes: none;
 	width: 80%;
 	margin: 0 auto;
-	color: lightblue;
+	color: @blue;
 	border-bottom: 1px solid;
 	margin-bottom: 25px;
 }
@@ -66,13 +72,24 @@ table {
 
 
 
+@import "elements.less";
+
+
+/* Colour Variables */
+@blue: #5B83AD;
+@light-blue: @blue + #111;
+
+
+
+
+
 
 
 /* =Structure
 -------------------------------------------------------------- */
 body{
 	font: 16px/28px Georgia, serif;
-}
+  }
 
 #page {
 	display: block;
@@ -82,7 +99,7 @@ body{
 
 #main{
 	overflow:hidden;
-	box-shadow: 0 0 5px lightblue;
+	box-shadow: 0 0 5px @blue;
 	padding: 10px;
 }
 header#branding{
@@ -95,10 +112,12 @@ header#branding hgroup{
 
 
 #primary {
+	.drop-shadow(0, 1px, 2px, 0.2);
 	float: left;
 	width: 640px;
 	border: 1px solid #eee;
 	padding: 25px;
+	
 }
 #content {
 }
@@ -130,6 +149,8 @@ a{
 	color:#444;
 	text-decoration: none;
 	border-bottom: 1px solid;
+	.transition(.5s, ease-out);
+	
 }
 
 em{
