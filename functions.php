@@ -22,7 +22,18 @@
  * @subpackage Toolbox
  * @since Toolbox 0.1
  */
+
+function xx_load_my_scripts() {
+    wp_enqueue_script( 'jquery' );
  
+    wp_register_script( 'victoriapark', get_template_directory_uri() .'/js/victoriapark.js');
+    wp_enqueue_script( 'victoriapark' );
+
+} 
+
+add_action('wp_enqueue_scripts', 'xx_load_my_scripts');
+
+
 if ( ! function_exists( 'toolbox_setup' ) ):
 /**
  * Sets up theme defaults and registers support for various WordPress features.
