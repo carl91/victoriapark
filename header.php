@@ -47,9 +47,7 @@
 	?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 
-
-<link rel="stylesheet/less" type="text/css" media="all" href="<?php echo get_template_directory_uri(); ?>/style.less" />
-<script src="<?php echo get_template_directory_uri(); ?>/js/less-1.1.5.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php bloginfo('stylesheet_url');?>" type="text/css" media="screen, projection" />
 
 
 <?php if ( is_singular() && get_option( 'thread_comments' ) ) wp_enqueue_script( 'comment-reply' ); ?>

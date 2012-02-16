@@ -34,6 +34,18 @@ function xx_load_my_scripts() {
 add_action('wp_enqueue_scripts', 'xx_load_my_scripts');
 
 
+/* Add page slug to body class */ 
+function add_body_class( $classes ){
+    global $post;
+    if ( isset( $post ) ) {
+        $classes[] = $post->post_type . '-' . $post->post_name;
+    }
+    return $classes;
+}
+add_filter( 'body_class', 'add_body_class' );
+
+
+
 if ( ! function_exists( 'toolbox_setup' ) ):
 /**
  * Sets up theme defaults and registers support for various WordPress features.

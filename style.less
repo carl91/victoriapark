@@ -570,6 +570,23 @@ article.comment {
 
 
 
+/* =Group/Clearfix
+-------------------------------------------------------------- */
+.group:before,
+.group:after {
+    content:"";
+    display:table;
+}
+.group:after {
+    clear:both;
+}
+.group {
+    zoom:1; /* For IE 6/7 (trigger hasLayout) */
+}
+
+
+
+
 ::selection 	 	{background: rgb(255,255,158);}
 ::-moz-selection 	{background: rgb(255,255,158);}
 img::selection 		{background: transparent;}
