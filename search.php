@@ -3,8 +3,8 @@
  * The template for displaying Search Results pages.
  *
  * @package WordPress
- * @subpackage Toolbox
- * @since Toolbox 0.1
+ * @subpackage Victoria Park
+ * @since Victoria Park 0.1
  */
 
 get_header(); ?>

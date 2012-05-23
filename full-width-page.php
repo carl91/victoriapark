@@ -3,9 +3,11 @@
  * Template Name: Full-width, no sidebar
  * Description: A full-width template with no sidebar
  *
+ * A barebones example of an alternate, assignable page template. Assign this template in a page's edit screen.
+
  * @package WordPress
- * @subpackage Toolbox
- * @since Toolbox 0.1
+ * @subpackage Victoria Park
+ * @since Victoria Park 0.1
  */
 
 get_header(); ?>

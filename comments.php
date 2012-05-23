@@ -8,8 +8,8 @@
  * located in the functions.php file.
  *
  * @package WordPress
- * @subpackage Toolbox
- * @since Toolbox 0.1
+ * @subpackage Victoria Park
+ * @since Victoria Park 0.1
  */
 ?>
 	<div id="comments">

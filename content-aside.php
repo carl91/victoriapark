@@ -5,8 +5,8 @@
  * Learn more: http://codex.wordpress.org/Post_Formats
  *
  * @package WordPress
- * @subpackage Toolbox
- * @since Toolbox 1.0
+ * @subpackage Victoria Park
+ * @since Victoria Park 1.0
  */
 ?>
 
