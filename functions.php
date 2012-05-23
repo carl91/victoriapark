@@ -32,11 +32,13 @@ add_filter( 'body_class', 'add_body_class' );
 
 
 
-/* Print out the current template file to the footer */
+/* Print out the current template file to the footer. Obviously to be removed in production */
+echo 'Template file:';
 add_action('wp_footer', 'show_template');
 function show_template() {
 	global $template;
-	print_r($template);
+	echo '<strong>Template file:</strong>';
+	 print_r($template);
 }
 
 
