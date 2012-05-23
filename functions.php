@@ -46,6 +46,19 @@ add_filter( 'body_class', 'add_body_class' );
 
 
 
+
+
+/* Print out the current template file to the footer */
+add_action('wp_footer', 'show_template');
+function show_template() {
+	global $template;
+	print_r($template);
+}
+
+
+
+
+
 if ( ! function_exists( 'toolbox_setup' ) ):
 /**
  * Sets up theme defaults and registers support for various WordPress features.
