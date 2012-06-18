@@ -1,13 +1,55 @@
 <?php
 /**
- * Victoria Park functions
+ * A study in stuctural functionalism at Victoria Park 
  *
  * @package WordPress
  * @subpackage Victoria Park
- * @since Victoria Park 0.1
+ * @since Victoria Park 0.2
  */
 
-function xx_load_my_scripts() {
+
+/**
+ * Setup defaults, register taxonomies/post types and other WordPress features.
+ * This function is hooked into the after_setup_theme hook.
+ *
+ * @since Victoria Park 0.2
+ */
+
+add_action('after_setup_theme', 'victoria_park_theme_setup');
+
+function victoria_park_theme_setup(){
+	//add basic features
+	add_theme_support('automatic-feed-links');
+	add_theme_support('post-formats', array('aside', 'gallery'));
+
+	//add custom scripts
+	add_action('wp_enqueue_scripts', 'victoria_park_enqueue_scripts');
+
+	//add custom widgets/sidebars
+	add_action('init', 'victoria_park_widgets_init');
+
+	// add custom menus
+	add_action('init', 'victoria_park_register_menus');
+
+
+	// add various other custom actions/filters
+	add_filter('body_class', 'victoria_park_better_body_classes');
+	add_filter('wp_nav_menu', 'victoria_park_add_slug_class_to_menu_item');
+
+
+	//print template file in footer — remove for production. 
+	add_action('wp_footer', 'victoria_park_show_template');
+
+}
+
+
+/**
+ * Loads theme-specific JavaScript files.
+ *
+ * @since 0.2
+ */
+
+function victoria_park_enqueue_scripts() {
     wp_enqueue_script( 'jquery' );
  
     wp_register_script( 'victoriapark', get_template_directory_uri() .'/js/victoriapark.js');
@@ -15,27 +57,36 @@ function xx_load_my_scripts() {
 
 } 
 
-add_action('wp_enqueue_scripts', 'xx_load_my_scripts');
+ 
 
+ /**
+ * Include the page slug in the body class attribute.
+ *
+ * @since 0.2
+ *
+ * @param array $classes The existing classes for the body element
+ * @return array The amended class array for the body element
+ */
 
-/* Add page slug to body class */ 
-function add_body_class( $classes ){
+function victoria_park_better_body_classes( $classes ){
     global $post;
     if ( isset( $post ) ) {
         $classes[] = $post->post_type . '-' . $post->post_name;
     }
     return $classes;
 }
-add_filter( 'body_class', 'add_body_class' );
 
 
 
 
+/**
+ * Print out the current template file to the footer. 
+ * Obviously to be removed in production
+ *
+ * @since 0.2
+ */
 
-/* Print out the current template file to the footer. Obviously to be removed in production */
- 
-add_action('wp_footer', 'show_template');
-function show_template() {
+function victoria_park_show_template() {
 	global $template;
 	echo '<strong>Template file:</strong>';
 	 print_r($template);
@@ -43,8 +94,14 @@ function show_template() {
 }
  
 
-/* Add slug to menu li classes */
-function add_slug_class_to_menu_item($output){
+
+/**
+ * Add slug to menu li classes
+ *
+ * @since 0.2
+ */
+
+function victoria_park_add_slug_class_to_menu_item($output){
 	$ps = get_option('permalink_structure');
 	if(!empty($ps)){
 		$idstr = preg_match_all('/<li id="menu-item-(\d+)/', $output, $matches);
@@ -56,204 +113,30 @@ function add_slug_class_to_menu_item($output){
 	}
 	return $output;
 }
-add_filter('wp_nav_menu', 'add_slug_class_to_menu_item');
 
-
-
-
-if ( ! function_exists( 'toolbox_setup' ) ):
 /**
- * Sets up theme defaults and registers support for various WordPress features.
+ * This theme uses wp_nav_menu() in one location.
  *
- * Note that this function is hooked into the after_setup_theme hook, which runs
- * before the init hook. The init hook is too late for some features, such as indicating
- * support post thumbnails.
- *
- * To override toolbox_setup() in a child theme, add your own toolbox_setup to your child theme's
- * functions.php file.
+ * @since 0.2
  */
-function toolbox_setup() {
-	/**
-	 * Make theme available for translation
-	 * Translations can be filed in the /languages/ directory
-	 * If you're building a theme based on toolbox, use a find and replace
-	 * to change 'toolbox' to the name of your theme in all the template files
-	 */
-	load_theme_textdomain( 'toolbox', get_template_directory() . '/languages' );
 
-	$locale = get_locale();
-	$locale_file = get_template_directory() . "/languages/$locale.php";
-	if ( is_readable( $locale_file ) )
-		require_once( $locale_file );
 
-	/**
-	 * Add default posts and comments RSS feed links to head
-	 */
-	add_theme_support( 'automatic-feed-links' );
-
-	/**
-	 * This theme uses wp_nav_menu() in one location.
-	 */
+function victoria_park_register_menus(){
 	register_nav_menus( array(
-		'primary' => __( 'Primary Menu', 'toolbox' ),
+		'primary' => __( 'Primary Menu', 'victoria_park' ),
 	) );
-
-	 
+	
 }
-endif; // toolbox_setup
 
+ 
 /**
- * Tell WordPress to run toolbox_setup() when the 'after_setup_theme' hook is run.
- */
-add_action( 'after_setup_theme', 'toolbox_setup' );
-
-/**
- * Set a default theme color array for WP.com.
- */
-$themecolors = array(
-	'bg' => 'ffffff',
-	'border' => 'eeeeee',
-	'text' => '444444',
-);
-
-/**
- * Get our wp_nav_menu() fallback, wp_page_menu(), to show a home link.
- */
-function toolbox_page_menu_args( $args ) {
-	$args['show_home'] = true;
-	return $args;
-}
-add_filter( 'wp_page_menu_args', 'toolbox_page_menu_args' );
-
-/**
- * Register widgetized area and update sidebar with default widgets
- */
-function toolbox_widgets_init() {
-	register_sidebar( array(
-		'name' => __( 'Sidebar 1', 'toolbox' ),
-		'id' => 'sidebar-1',
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => "</aside>",
-		'before_title' => '<h1 class="widget-title">',
-		'after_title' => '</h1>',
-	) );
-
-	register_sidebar( array(
-		'name' => __( 'Sidebar 2', 'toolbox' ),
-		'id' => 'sidebar-2',
-		'description' => __( 'An optional second sidebar area', 'toolbox' ),
-		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-		'after_widget' => "</aside>",
-		'before_title' => '<h1 class="widget-title">',
-		'after_title' => '</h1>',
-	) );
-}
-add_action( 'init', 'toolbox_widgets_init' );
-
-if ( ! function_exists( 'toolbox_content_nav' ) ):
-/**
- * Display navigation to next/previous pages when applicable
+ * Modify the Posted on output
  *
- * @since Toolbox 1.2
+ * @since 0.2
  */
-function toolbox_content_nav( $nav_id ) {
-	global $wp_query;
 
-	?>
-	<nav id="<?php echo $nav_id; ?>">
-		<h1 class="assistive-text section-heading"><?php _e( 'Post navigation', 'toolbox' ); ?></h1>
-
-	<?php if ( is_single() ) : // navigation links for single posts ?>
-
-		<?php previous_post_link( '<div class="nav-previous">%link</div>', '<span class="meta-nav">' . _x( '&larr;', 'Previous post link', 'toolbox' ) . '</span> %title' ); ?>
-		<?php next_post_link( '<div class="nav-next">%link</div>', '%title <span class="meta-nav">' . _x( '&rarr;', 'Next post link', 'toolbox' ) . '</span>' ); ?>
-
-	<?php elseif ( $wp_query->max_num_pages > 1 && ( is_home() || is_archive() || is_search() ) ) : // navigation links for home, archive, and search pages ?>
-
-		<?php if ( get_next_posts_link() ) : ?>
-		<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'toolbox' ) ); ?></div>
-		<?php endif; ?>
-
-		<?php if ( get_previous_posts_link() ) : ?>
-		<div class="nav-next"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'toolbox' ) ); ?></div>
-		<?php endif; ?>
-
-	<?php endif; ?>
-
-	</nav><!-- #<?php echo $nav_id; ?> -->
-	<?php
-}
-endif; // toolbox_content_nav
-
-
-if ( ! function_exists( 'toolbox_comment' ) ) :
-/**
- * Template for comments and pingbacks.
- *
- * To override this walker in a child theme without modifying the comments template
- * simply create your own toolbox_comment(), and that function will be used instead.
- *
- * Used as a callback by wp_list_comments() for displaying the comments.
- *
- * @since Toolbox 0.4
- */
-function toolbox_comment( $comment, $args, $depth ) {
-	$GLOBALS['comment'] = $comment;
-	switch ( $comment->comment_type ) :
-		case 'pingback' :
-		case 'trackback' :
-	?>
-	<li class="post pingback">
-		<p><?php _e( 'Pingback:', 'toolbox' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __( '(Edit)', 'toolbox' ), ' ' ); ?></p>
-	<?php
-			break;
-		default :
-	?>
-	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
-		<article id="comment-<?php comment_ID(); ?>" class="comment">
-			<footer>
-				<div class="comment-author vcard">
-					<?php echo get_avatar( $comment, 40 ); ?>
-					<?php printf( __( '%s <span class="says">says:</span>', 'toolbox' ), sprintf( '<cite class="fn">%s</cite>', get_comment_author_link() ) ); ?>
-				</div><!-- .comment-author .vcard -->
-				<?php if ( $comment->comment_approved == '0' ) : ?>
-					<em><?php _e( 'Your comment is awaiting moderation.', 'toolbox' ); ?></em>
-					<br />
-				<?php endif; ?>
-
-				<div class="comment-meta commentmetadata">
-					<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>"><time pubdate datetime="<?php comment_time( 'c' ); ?>">
-					<?php
-						/* translators: 1: date, 2: time */
-						printf( __( '%1$s at %2$s', 'toolbox' ), get_comment_date(), get_comment_time() ); ?>
-					</time></a>
-					<?php edit_comment_link( __( '(Edit)', 'toolbox' ), ' ' );
-					?>
-				</div><!-- .comment-meta .commentmetadata -->
-			</footer>
-
-			<div class="comment-content"><?php comment_text(); ?></div>
-
-			<div class="reply">
-				<?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
-			</div><!-- .reply -->
-		</article><!-- #comment-## -->
-
-	<?php
-			break;
-	endswitch;
-}
-endif; // ends check for toolbox_comment()
-
-if ( ! function_exists( 'toolbox_posted_on' ) ) :
-/**
- * Prints HTML with meta information for the current post-date/time and author.
- * Create your own toolbox_posted_on to override in a child theme
- *
- * @since Toolbox 1.2
- */
-function toolbox_posted_on() {
-	printf( __( '<span class="sep">Posted on </span><a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s" pubdate>%4$s</time></a><span class="byline"> <span class="sep"> by </span> <span class="author vcard"><a class="url fn n" href="%5$s" title="%6$s" rel="author">%7$s</a></span></span>', 'toolbox' ),
+function victoria_park_posted_on() {
+	printf( __( '<span class="sep">Posted on </span><a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s" pubdate>%4$s</time></a><span class="byline">   </span></span>', 'toolbox' ),
 		esc_url( get_permalink() ),
 		esc_attr( get_the_time() ),
 		esc_attr( get_the_date( 'c' ) ),
@@ -263,29 +146,74 @@ function toolbox_posted_on() {
 		esc_html( get_the_author() )
 	);
 }
-endif;
+
+
 
 /**
- * Adds custom classes to the array of body classes.
- *
- * @since Toolbox 1.2
+ * Register widgetized area and update sidebar with default widgets
  */
-function toolbox_body_classes( $classes ) {
-	// Adds a class of single-author to blogs with only 1 published author
-	if ( ! is_multi_author() ) {
-		$classes[] = 'single-author';
-	}
+function victoria_park_widgets_init() {
+	register_sidebar( array(
+		'name' => __( 'Sidebar 1', 'victoria_park' ),
+		'id' => 'sidebar-1',
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => "</aside>",
+		'before_title' => '<h1 class="widget-title">',
+		'after_title' => '</h1>',
+	) );
 
-	return $classes;
+	register_sidebar( array(
+		'name' => __( 'Sidebar 2', 'victoria_park' ),
+		'id' => 'sidebar-2',
+		'description' => __( 'An optional second sidebar area', 'victoria_park' ),
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => "</aside>",
+		'before_title' => '<h1 class="widget-title">',
+		'after_title' => '</h1>',
+	) );
 }
-add_filter( 'body_class', 'toolbox_body_classes' );
 
+
+
+
+if ( ! function_exists( 'victoria_park_content_nav' ) ):
 /**
- * Returns true if a blog has more than 1 category
+ * Display navigation to next/previous pages when applicable
  *
- * @since Toolbox 1.2
+ * @since victoria_park 1.2
  */
-function toolbox_categorized_blog() {
+function victoria_park_content_nav( $nav_id ) {
+	global $wp_query;
+
+	?>
+	<nav id="<?php echo $nav_id; ?>">
+		<h1 class="assistive-text section-heading"><?php _e( 'Post navigation', 'victoria_park' ); ?></h1>
+
+	<?php if ( is_single() ) : // navigation links for single posts ?>
+
+		<?php previous_post_link( '<div class="nav-previous">%link</div>', '<span class="meta-nav">' . _x( '&larr;', 'Previous post link', 'victoria_park' ) . '</span> %title' ); ?>
+		<?php next_post_link( '<div class="nav-next">%link</div>', '%title <span class="meta-nav">' . _x( '&rarr;', 'Next post link', 'victoria_park' ) . '</span>' ); ?>
+
+	<?php elseif ( $wp_query->max_num_pages > 1 && ( is_home() || is_archive() || is_search() ) ) : // navigation links for home, archive, and search pages ?>
+
+		<?php if ( get_next_posts_link() ) : ?>
+		<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'victoria_park' ) ); ?></div>
+		<?php endif; ?>
+
+		<?php if ( get_previous_posts_link() ) : ?>
+		<div class="nav-next"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'victoria_park' ) ); ?></div>
+		<?php endif; ?>
+
+	<?php endif; ?>
+
+	</nav><!-- #<?php echo $nav_id; ?> -->
+	<?php
+}
+endif; // victoria_park_content_nav
+
+
+
+function victoria_park_categorized_blog() {
 	if ( false === ( $all_the_cool_cats = get_transient( 'all_the_cool_cats' ) ) ) {
 		// Create an array of all the categories that are attached to posts
 		$all_the_cool_cats = get_categories( array(
@@ -304,35 +232,8 @@ function toolbox_categorized_blog() {
 	} else {
 		// This blog has only 1 category so toolbox_categorized_blog should return false
 		return false;
+		 
 	}
 }
 
-/**
- * Flush out the transients used in toolbox_categorized_blog
- *
- * @since Toolbox 1.2
- */
-function toolbox_category_transient_flusher() {
-	// Like, beat it. Dig?
-	delete_transient( 'all_the_cool_cats' );
-}
-add_action( 'edit_category', 'toolbox_category_transient_flusher' );
-add_action( 'save_post', 'toolbox_category_transient_flusher' );
-
-/**
- * Filter in a link to a content ID attribute for the next/previous image links on image attachment pages
- */
-function toolbox_enhanced_image_navigation( $url ) {
-	global $post;
-
-	if ( wp_attachment_is_image( $post->ID ) )
-		$url = $url . '#main';
-
-	return $url;
-}
-add_filter( 'attachment_link', 'toolbox_enhanced_image_navigation' );
-
-
-/**
- * This theme was built with PHP, Semantic HTML, CSS, love, and a Toolbox.
- */
+ 
