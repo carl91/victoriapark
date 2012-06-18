@@ -16,7 +16,7 @@ get_header(); ?>
 
 				<?php get_template_part( 'content', 'single' ); ?>
 
-				<?php toolbox_content_nav( 'nav-below' ); ?>
+				<?php victoria_park_content_nav( 'nav-below' ); ?>
 
 
 			<?php endwhile; // end of the loop. ?>
