@@ -90,7 +90,6 @@ function victoria_park_show_template() {
 	global $template;
 	echo '<strong>Template file:</strong>';
 	 print_r($template);
-	 echo basename( $path );
 }
  
 
